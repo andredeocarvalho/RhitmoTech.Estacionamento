@@ -38,7 +38,7 @@
 
         public int ContarVagasOcupadasPorTipoVeiculo(TipoVeiculoEnum tipo) => Vagas.Sum(x => x.Count(v => !v.Disponivel && v.VeiculoEstacionado?.Tipo == tipo));
 
-        public int ContarVeiculosPorTipoVeiculo(TipoVeiculoEnum tipo) => VeiculosEstacionados.Count(v => v.Value.VeiculoEstacionado?.Tipo == tipo) + (tipo == TipoVeiculoEnum.Van ? VansEstacionadas.Count() : 0);
+        public int ContarVeiculosPorTipoVeiculo(TipoVeiculoEnum tipo) => VeiculosEstacionados.Count(v => v.Value.VeiculoEstacionado?.Tipo == tipo) + (tipo == TipoVeiculoEnum.Van ? VansEstacionadas.Count : 0);
 
         public void TentarEstacionarVeiculo(Veiculo veiculo)
         {
@@ -59,6 +59,7 @@
                 TipoVeiculoEnum.Moto => EstacionarMoto(veiculo),
                 TipoVeiculoEnum.Carro => EstacionarCarro(veiculo),
                 TipoVeiculoEnum.Van => EstacionarVan(veiculo),
+                _ => throw new ArgumentException("Tipo de veiculo inválido.")
             };
 
             if (!estacionado)
