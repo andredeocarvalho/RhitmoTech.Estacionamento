@@ -32,9 +32,13 @@
 
         public bool EstacionamentoEstaVazio() => ContarVagasDisponiveis() == CapacidadeTotal;
 
-        public bool VagasTipoVeiculoCheias(TipoVeiculoEnum tipo) => Vagas[(int)tipo].All(vaga => !vaga.Disponivel);
+        public bool VagasTipoVagaCheias(TipoVeiculoEnum tipo) => Vagas[(int)tipo].All(vaga => !vaga.Disponivel);
 
-        public int ContarVagasOcupadasPorTipo(TipoVeiculoEnum tipo) => Vagas[(int)tipo].Count(vaga => !vaga.Disponivel);
+        public int ContarVagasOcupadasPorTipoVaga(TipoVeiculoEnum tipo) => Vagas[(int)tipo].Count(vaga => !vaga.Disponivel);
+
+        public int ContarVagasOcupadasPorTipoVeiculo(TipoVeiculoEnum tipo) => Vagas.Sum(x => x.Count(v => !v.Disponivel && v.VeiculoEstacionado?.Tipo == tipo));
+
+        public int ContarVeiculosPorTipoVeiculo(TipoVeiculoEnum tipo) => VeiculosEstacionados.Count(v => v.Value.VeiculoEstacionado?.Tipo == tipo) + (tipo == TipoVeiculoEnum.Van ? VansEstacionadas.Count() : 0);
 
         public void TentarEstacionarVeiculo(Veiculo veiculo)
         {
@@ -133,6 +137,10 @@
             vagaDisponivel.Ocupar(veiculo);
             VeiculosEstacionados.Add(veiculo.Placa, vagaDisponivel);
             Console.WriteLine($"O veículo de placa {veiculo.Placa} ocupou uma vaga de {tipoVeiculo}.");
+
+            if (Vagas[(int)tipoVeiculo].FirstOrDefault(v => v.Disponivel) == null)
+                Console.WriteLine($"Todas as vagas para {tipoVeiculo}s estão ocupadas.");
+
             return true;
         }
         #endregion

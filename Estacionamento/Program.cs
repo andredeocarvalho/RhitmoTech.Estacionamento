@@ -45,6 +45,8 @@ foreach (var van in vans)
     estacionamento.TentarEstacionarVeiculo(van);
 }
 
+Console.WriteLine($"{estacionamento.ContarVagasOcupadasPorTipoVeiculo(TipoVeiculoEnum.Van)} vagas estão ocupadas por {estacionamento.ContarVeiculosPorTipoVeiculo(TipoVeiculoEnum.Van)} vans.");
+
 Console.WriteLine($"Esvaziar o estacionamento:");
 foreach (var moto in motos)
     estacionamento.TentarDeixarVaga(moto);
